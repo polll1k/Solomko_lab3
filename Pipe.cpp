@@ -10,7 +10,9 @@ Pipe::Pipe():id(nextId++),name(""),length(0),diameter(0),inRepair(false) {
 int Pipe::getId() const {
     return id;
 }
-
+int Pipe::getDiameter() const {
+    return diameter;
+}
 void Pipe::input() {
     int repair;
     cout<<"Название: ";

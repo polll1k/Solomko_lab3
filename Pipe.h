@@ -12,6 +12,7 @@ private:
 public:
     Pipe();
     int getId() const;
+    int getDiameter() const;
     void input();
     void print() const;
     void setRepair(bool value);
