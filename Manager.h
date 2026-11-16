@@ -3,10 +3,15 @@
 #include <iostream>
 #include "Pipe.h"
 #include "CompressorStation.h"
+struct Link {
+    int inputId;
+    int outputId;
+};
 class Manager {
 private:
     std::unordered_map<int, Pipe> pipes;
     std::unordered_map<int, CompressorStation> stations;
+    std::unordered_map<int, Link> links;
     int nextPipeId = 1;
     int nextStationId = 1;
     void addPipe();
