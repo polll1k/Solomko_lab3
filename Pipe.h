@@ -8,9 +8,8 @@ private:
     double length;
     int diameter;
     bool inRepair;
-    static int nextId;
 public:
-    Pipe();
+    Pipe(int newId = 0);
     int getId() const;
     int getDiameter() const;
     void input();
@@ -18,7 +17,6 @@ public:
     void setRepair(bool value);
     bool matchesName(const std::string& text) const;
     bool matchesRepair(bool value) const;
-    static void updateNextId(int id);
     friend std::ostream& operator<<(std::ostream& out,const Pipe& pipe);
     friend std::istream& operator>>(std::istream& in,Pipe& pipe);
 };

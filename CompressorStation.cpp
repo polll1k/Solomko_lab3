@@ -2,10 +2,9 @@
 #include "Logger.h"
 using namespace std;
 
-int CompressorStation::nextId=1;
-
-CompressorStation::CompressorStation():id(nextId++),name(""),workshops(0),workshopsInWork(0),stationClass(0) {
+CompressorStation::CompressorStation(int newId):id(newId),name(""),workshops(0),workshopsInWork(0),stationClass(0) {
 }
+
 
 int CompressorStation::getId() const {
     return id;
@@ -92,11 +91,7 @@ bool CompressorStation::matchesName(const string& text) const {
 bool CompressorStation::matchesIdlePercent(double percent) const {
     return getIdlePercent()>=percent;
 }
-void CompressorStation::updateNextId(int id) {
-    if (id>=nextId) {
-        nextId=id+1;
-    }
-}
+
 
 ostream& operator<<(ostream& out,const CompressorStation& cs) {
     out<<cs.id<<endl;
@@ -118,8 +113,5 @@ istream& operator>>(istream& in,CompressorStation& cs) {
     in>>cs.workshopsInWork;
     in>>cs.stationClass;
     in.ignore(100,'\n');
-    if (in) {
-        CompressorStation::updateNextId(cs.id);
-    }
     return in;
 }

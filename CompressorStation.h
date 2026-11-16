@@ -8,10 +8,9 @@ private:
     int workshops;
     int workshopsInWork;
     int stationClass;
-    static int nextId;
 
 public:
-    CompressorStation();
+    CompressorStation(int newId = 0);
     int getId() const;
     std::string getName() const;
     void input();
@@ -21,7 +20,6 @@ public:
     double getIdlePercent() const;
     bool matchesName(const std::string& text) const;
     bool matchesIdlePercent(double percent) const;
-    static void updateNextId(int id);
     friend std::ostream& operator<<(std::ostream& out,const CompressorStation& cs);
     friend std::istream& operator>>(std::istream& in,CompressorStation& cs);
 };

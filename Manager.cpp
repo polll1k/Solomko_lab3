@@ -23,16 +23,18 @@ int readChoice(int minValue, int maxValue) {
     }
 }
 void Manager::addPipe() {
-    Pipe pipe;
+    Pipe pipe(nextPipeId);
     cin >> pipe;
     pipes.emplace(pipe.getId(), pipe);
+    nextPipeId++;
     cout << "Труба добавлена. ID: " << pipe.getId() << endl;
 }
 
 void Manager::addStation() {
-    CompressorStation cs;
+    CompressorStation cs(nextStationId);
     cin >> cs;
     stations.emplace(cs.getId(), cs);
+    nextStationId++;
     cout << "КС добавлена. ID: " << cs.getId() << endl;
 }
 
@@ -383,6 +385,18 @@ void Manager::loadData() {
 
     pipes = newPipes;
     stations = newStations;
+    nextPipeId = 1;
+    for (const auto& pair : pipes) {
+        if (pair.first >= nextPipeId) {
+            nextPipeId = pair.first + 1;
+        }
+    }
+    nextStationId = 1;
+    for (const auto& pair : stations) {
+        if (pair.first >= nextStationId) {
+            nextStationId = pair.first + 1;
+        }
+    }
 
     cout << "Данные загружены" << endl;
 }

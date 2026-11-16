@@ -2,11 +2,9 @@
 #include "Logger.h"
 using namespace std;
 
-int Pipe::nextId=1;
 
-Pipe::Pipe():id(nextId++),name(""),length(0),diameter(0),inRepair(false) {
+Pipe::Pipe(int newId): id(newId),name(""),length(0),diameter(0), inRepair(false) {
 }
-
 int Pipe::getId() const {
     return id;
 }
@@ -67,11 +65,7 @@ bool Pipe::matchesName(const string& text) const {
 bool Pipe::matchesRepair(bool value) const {
     return inRepair==value;
 }
-void Pipe::updateNextId(int id) {
-    if (id>=nextId) {
-        nextId=id+1;
-    }
-}
+
 ostream& operator<<(ostream& out,const Pipe& pipe) {
     out<<pipe.id<<endl;
     out<<pipe.name<<endl;
@@ -100,9 +94,6 @@ istream& operator>>(istream& in,Pipe& pipe) {
     }
     else {
         in.setstate(ios::failbit);
-    }
-    if (in) {
-        Pipe::updateNextId(pipe.id);
     }
     return in;
 }

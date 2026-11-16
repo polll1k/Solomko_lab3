@@ -7,6 +7,8 @@ class Manager {
 private:
     std::unordered_map<int, Pipe> pipes;
     std::unordered_map<int, CompressorStation> stations;
+    int nextPipeId = 1;
+    int nextStationId = 1;
     void addPipe();
     void addStation();
     void showObjects();
