@@ -413,6 +413,11 @@ void Manager::saveData() {
             file << pair.second;
         }
     }
+    file << "NETWORK" << endl;
+    file << links.size() << endl;
+    for (const auto& pair : links) {
+        file << pair.first << " " << pair.second.inputId << " " << pair.second.outputId << endl;
+    }
     if (!file) {
         cout << "Ошибка записи файла" << endl;
         return;
@@ -506,9 +511,41 @@ void Manager::loadData() {
         cout << "Ошибка файла" << endl;
         return;
     }
-
+    unordered_map<int, Link> newLinks;
+    string section;
+    if (file>>section) {
+        if (section != "NETWORK") {
+            cout << "Ошибка файла" << endl;
+            return;
+        }
+        if (!(file>> count) || count< 0) {
+            cout << "Ошибка количества соединений" << endl;
+            return;
+        }
+        for (int i = 0; i < count; i++) {
+            int pipeId, inputId, outputId;
+            if (!(file >> pipeId >> inputId >> outputId)) {
+                cout << "Ошибка чтения соединений" << endl;
+                return;
+            }
+            if (newPipes.find(pipeId)==newPipes.end() ||
+                newStations.find(inputId)==newStations.end() ||
+                newStations.find(outputId)==newStations.end() ||
+                inputId==outputId ||
+                newLinks.find(pipeId)!=newLinks.end()) {
+                cout << "Ошибка соединения" << endl;
+                return;
+            }
+            newLinks.emplace(pipeId,Link{inputId,outputId});
+        }
+    }
+    else if (!file.eof()) {
+        cout<<"Ошибка файла"<<endl;
+        return;
+    }
     pipes = newPipes;
     stations = newStations;
+    links = newLinks;
     nextPipeId = 1;
     for (const auto& pair : pipes) {
         if (pair.first >= nextPipeId) {
