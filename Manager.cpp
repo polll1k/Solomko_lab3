@@ -275,6 +275,7 @@ void Manager::searchPipes() {
             pipes.at(id).setRepair(false);
         }
         else if (action == 3) {
+            links.erase(id);
             pipes.erase(id);
         }
     }
@@ -359,10 +360,21 @@ void Manager::searchStations() {
     else if (action == 2) {
         stations.at(id).stopWorkshop();
     }
+    
     else if (action == 3) {
+        vector<int> linksToDelete;
+        for (const auto& pair:links) {
+            if (pair.second.inputId==id || pair.second.outputId==id) {
+                linksToDelete.push_back(pair.first);
+            }
+        }
+        for (int pipeId:linksToDelete) {
+            links.erase(pipeId);
+        }
         stations.erase(id);
-        cout << "КС удалена" << endl;
+        cout<<"КС удалена"<<endl;
     }
+
 }
 void Manager::saveData() {
     string filename;
