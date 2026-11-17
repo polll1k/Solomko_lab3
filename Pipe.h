@@ -12,7 +12,7 @@ public:
     Pipe(int newId = 0);
     int getId() const;
     int getDiameter() const;
-    void input();
+    void input(int chosenDiameter=0);
     void print() const;
     void setRepair(bool value);
     bool matchesName(const std::string& text) const;

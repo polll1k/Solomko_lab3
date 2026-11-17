@@ -74,7 +74,16 @@ void Manager::connectStations() {
             return;
         }
     }
+
     cout<<"Свободной трубы подходящего диаметра нет"<<endl;
+    cout<<"Создание новой трубы"<<endl;
+    Pipe pipe(nextPipeId);
+    pipe.input(diameter);
+    pipes.emplace(pipe.getId(),pipe);
+    links.emplace(pipe.getId(),Link{inputId,outputId});
+    nextPipeId++;
+    cout<<"Создана труба ID: "<<pipe.getId()<<endl;
+    cout<<"КС соединены"<<endl;
 }
 
 void Manager::showObjects() {

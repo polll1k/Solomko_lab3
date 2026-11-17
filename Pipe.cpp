@@ -11,7 +11,7 @@ int Pipe::getId() const {
 int Pipe::getDiameter() const {
     return diameter;
 }
-void Pipe::input() {
+void Pipe::input(int chosenDiameter) {
     int repair;
     cout<<"Название: ";
     getline(cin>>ws,name);
@@ -26,6 +26,13 @@ void Pipe::input() {
     }
     Logger::write(length);
     cin.ignore(100,'\n');
+    if (chosenDiameter!=0) {
+        diameter=chosenDiameter;
+        inRepair=false;
+        Logger::write(diameter);
+        Logger::write(0);
+        return;
+    }
     cout<<"Диаметр: ";
     cin>>diameter;
     while (cin.fail() || diameter<=0) {
