@@ -18,6 +18,7 @@ private:
     void addStation();
     void connectStations();
     void showNetwork();
+    void topologicalSort();
     void showObjects();
     void searchPipes();
     void searchStations();

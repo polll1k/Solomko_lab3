@@ -101,6 +101,55 @@ void Manager::showNetwork() {
         cout<<endl;
     }
 }
+void Manager::topologicalSort() {
+    if (stations.empty()) {
+        cout<<"КС нет"<<endl;
+        return;
+    }
+    unordered_map<int,int> degree;
+    for (const auto& pair:stations) {
+        degree[pair.first]=0;
+    }
+    for (const auto& pair:links) {
+        int inputId=pair.second.inputId;
+        int outputId=pair.second.outputId;
+        if (stations.find(inputId)!=stations.end() && stations.find(outputId)!=stations.end()) {
+            degree[inputId]++;
+        }
+    }
+    vector<int> order;
+    while (!degree.empty()) {
+        int id=-1;
+        for (const auto& pair:degree) {
+            if (pair.second==0) {
+                id=pair.first;
+                break;
+            }
+        }
+        if (id==-1) {
+            cout<<"Топологическая сортировка невозможна: в графе есть цикл"<<endl;
+            return;
+        }
+        order.push_back(id);
+        degree.erase(id);
+        for (const auto& pair:links) {
+            if (pair.second.outputId==id) {
+                int inputId=pair.second.inputId;
+                if (degree.find(inputId)!=degree.end()) {
+                    degree[inputId]--;
+                }
+            }
+        }
+    }
+    cout<<"Топологический порядок КС: ";
+    for (int i=(int)order.size()-1;i>=0;i--) {
+        cout<<order[i];
+        if (i>0) {
+            cout<<" -> ";
+        }
+    }
+    cout<<endl;
+}
 void Manager::showObjects() {
     if (pipes.empty() && stations.empty()) {
         cout << "Объектов нет" << endl;
@@ -475,9 +524,10 @@ void Manager::run() {
         cout << "7. Загрузить" << endl;
         cout << "8. Соединить КС трубой" << endl;
         cout << "9. Просмотреть сеть" << endl;
+        cout << "10. Топологическая сортировка" << endl;
         cout << "0. Выход" << endl;
         cout << "Ваш выбор: ";
-        int choice = readChoice(0, 9);
+        int choice = readChoice(0, 10);
         if (choice == 0) {
             cout << "Выход" << endl;
             break;
@@ -509,6 +559,9 @@ void Manager::run() {
         }
         else if (choice == 9) {
             showNetwork();
+        }
+        else if (choice == 10) {
+            topologicalSort();
         }
     }
 }
