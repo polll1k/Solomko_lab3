@@ -16,6 +16,7 @@ private:
     int nextStationId = 1;
     void addPipe();
     void addStation();
+    void connectStations();
     void showObjects();
     void searchPipes();
     void searchStations();

@@ -38,6 +38,45 @@ void Manager::addStation() {
     cout << "КС добавлена. ID: " << cs.getId() << endl;
 }
 
+void Manager::connectStations() {
+    if (stations.size()<2) {
+        cout<<"Для соединения нужны две КС"<<endl;
+        return;
+    }
+    cout<<"Введите ID КС входа: ";
+    int inputId=readChoice(1,numeric_limits<int>::max());
+    cout<<"Введите ID КС выхода: ";
+    int outputId=readChoice(1,numeric_limits<int>::max());
+    if (stations.find(inputId)==stations.end() || stations.find(outputId)==stations.end()) {
+        cout<<"КС с таким ID нет"<<endl;
+        return;
+    }
+    if (inputId==outputId) {
+        cout<<"Нельзя соединить КС с самой собой"<<endl;
+        return;
+    }
+    int diameter;
+    while (true) {
+        cout<<"Введите диаметр трубы (500, 700, 1000, 1400): ";
+        diameter=readChoice(500,1400);
+        if (diameter==500 || diameter==700 || diameter==1000 || diameter==1400) {
+            break;
+        }
+        cout<<"Такого диаметра нет"<<endl;
+    }
+
+    for (const auto& pair:pipes) {
+        if (pair.second.getDiameter()==diameter &&
+            pair.second.matchesRepair(false) &&
+            links.find(pair.first)==links.end()) {
+            links.emplace(pair.first,Link{inputId,outputId});
+            cout<<"КС соединены трубой ID: "<<pair.first<<endl;
+            return;
+        }
+    }
+    cout<<"Свободной трубы подходящего диаметра нет"<<endl;
+}
+
 void Manager::showObjects() {
     if (pipes.empty() && stations.empty()) {
         cout << "Объектов нет" << endl;
@@ -410,9 +449,10 @@ void Manager::run() {
         cout << "5. Поиск КС" << endl;
         cout << "6. Сохранить" << endl;
         cout << "7. Загрузить" << endl;
+        cout << "8. Соединить КС трубой" << endl;
         cout << "0. Выход" << endl;
         cout << "Ваш выбор: ";
-        int choice = readChoice(0, 7);
+        int choice = readChoice(0, 8);
         if (choice == 0) {
             cout << "Выход" << endl;
             break;
@@ -438,6 +478,9 @@ void Manager::run() {
         }
         else if (choice == 7) {
             loadData();
+        }
+        else if (choice == 8) {
+            connectStations();
         }
     }
 }
