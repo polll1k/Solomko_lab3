@@ -17,6 +17,7 @@ private:
     void addPipe();
     void addStation();
     void connectStations();
+    void showNetwork();
     void showObjects();
     void searchPipes();
     void searchStations();

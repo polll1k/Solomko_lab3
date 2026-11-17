@@ -86,6 +86,21 @@ void Manager::connectStations() {
     cout<<"КС соединены"<<endl;
 }
 
+void Manager::showNetwork() {
+    if (links.empty()) {
+        cout<<"Соединений нет"<<endl;
+        return;
+    }
+    cout<<"Газотранспортная сеть:"<<endl;
+    for (const auto& pair:links) {
+        cout<<"КС "<<pair.second.inputId<<" -> КС "<<pair.second.outputId;
+        cout<<" | Труба ID: "<<pair.first;
+        if (pipes.find(pair.first)!=pipes.end()) {
+            cout<<" | Диаметр: "<<pipes.at(pair.first).getDiameter()<<" мм";
+        }
+        cout<<endl;
+    }
+}
 void Manager::showObjects() {
     if (pipes.empty() && stations.empty()) {
         cout << "Объектов нет" << endl;
@@ -459,9 +474,10 @@ void Manager::run() {
         cout << "6. Сохранить" << endl;
         cout << "7. Загрузить" << endl;
         cout << "8. Соединить КС трубой" << endl;
+        cout << "9. Просмотреть сеть" << endl;
         cout << "0. Выход" << endl;
         cout << "Ваш выбор: ";
-        int choice = readChoice(0, 8);
+        int choice = readChoice(0, 9);
         if (choice == 0) {
             cout << "Выход" << endl;
             break;
@@ -490,6 +506,9 @@ void Manager::run() {
         }
         else if (choice == 8) {
             connectStations();
+        }
+        else if (choice == 9) {
+            showNetwork();
         }
     }
 }
